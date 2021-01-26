@@ -1,9 +1,11 @@
+// const { response } = require("express");
+
 /**
  * Класс CreateAccountForm управляет формой
  * создания нового счёта
  * Наследуется от AsyncForm
  * */
-class CreateAccountForm {
+class CreateAccountForm extends AsyncForm {
   /**
    * Создаёт счёт с помощью Account.create и закрывает
    * окно (в котором находится форма) в случае успеха,
@@ -11,6 +13,12 @@ class CreateAccountForm {
    * и сбрасывает форму
    * */
   onSubmit( options ) {
-
+    Account.create(options, (err, response) => {
+      if (err == null && response.success) {
+        let modalCreateAccount = App.getModal("createAccount");
+        modalCreateAccount.close();
+        App.update();
+      }
+    });
   }
 }

@@ -11,7 +11,10 @@ class UserWidget {
    * необходимо выкинуть ошибку.
    * */
   constructor( element ) {
-
+    if (element == null) {
+      throw new Error("this element null");
+    }
+    this.element = element;
   }
 
   /**
@@ -22,6 +25,10 @@ class UserWidget {
    * авторизованного пользователя
    * */
   update() {
-
+    let currentUser = User.current();
+    if (currentUser != null) {
+      let userName = this.element.querySelector(".user-name");
+      userName.innerHTML = currentUser.name;
+    }
   }
 }

@@ -9,8 +9,11 @@ class Entity {
    * Это могут быть счета или доходы/расходы
    * (в зависимости от того, что наследуется от Entity)
    * */
+  static get URL () {
+    return "";
+  }
   static list( data, callback = f => f ) {
-
+    return createRequest({url: this.URL, method: "GET", data: data, callback: callback, responseType: "json"});
   }
 
   /**
@@ -19,7 +22,9 @@ class Entity {
    * что наследуется от Entity)
    * */
   static create( data, callback = f => f ) {
-
+    let copy = Object.assign({}, data);
+    copy._method = "PUT";
+    return createRequest({url: this.URL, method: "POST", data: copy, callback: callback, responseType: "json"});
   }
 
   /**
@@ -27,7 +32,9 @@ class Entity {
    * (в зависимости от того, что наследуется от Entity)
    * */
   static get( id = '', data, callback = f => f ) {
-
+    let copy = Object.assign({}, data);
+    copy.id = id;
+    return createRequest({url: this.URL+"/"+id, method: "GET", data: copy, callback: callback, responseType: "json"});
   }
 
   /**
@@ -35,7 +42,10 @@ class Entity {
    * (в зависимости от того, что наследуется от Entity)
    * */
   static remove( id = '', data, callback = f => f ) {
-
+    let copy = Object.assign({}, data);
+    copy._method = "DELETE";
+    copy.id = id;
+    return createRequest({url: this.URL, method: "POST", data: copy, callback: callback, responseType: "json"});
   }
 }
 

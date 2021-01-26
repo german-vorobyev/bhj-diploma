@@ -13,6 +13,7 @@ const FileSync = require('lowdb/adapters/FileSync', {
 router.get("/", upload.none(), function(request, response) {
     const db = low(new FileSync('db.json'));// получение БД
     //получение значения списка транзакций, для указанного счёта
+    console.log("get list transaction", request.query);
     let transactions = db.get("transactions").filter({account_id: request.query.account_id}).value();
     //отправка ответа со списком транзакций
     response.json({ success: true, data: transactions });
@@ -22,6 +23,7 @@ router.post("/", upload.none(), function(request, response) {
     const db = low(new FileSync('db.json'));// получение БД
     let transactions = db.get("transactions");// получение всех транзакций
     const { _method } = request.body;// получение используемого HTTP метода
+    console.log(request.body)
     if(_method == "DELETE"){// если метод DELETE...
         let { id } = request.body;// получение id из тела запроса
         let removingTransaction = transactions.find({id});// нахождение удаляемой транзакции
